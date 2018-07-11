@@ -10,8 +10,8 @@ function lorem() {
 }
 
 // seed some posts so initial GET requests will return something
-BlogPosts.create("10 things -- you won't believe #4", lorem(), "Billy Bob");
-BlogPosts.create("Lions and tigers and bears oh my", lorem(), "Lefty Lil");
+BlogPosts.create("Why I have never eaten a toad", lorem(), "No Toad");
+BlogPosts.create("All work and no play makes Jack a dull boy", lorem(), "Shine On Me");
 
 // add endpoint for GET. It should call `BlogPosts.get()`
 // and return JSON objects of stored blog posts.
