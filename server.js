@@ -27,10 +27,20 @@ app.get("/authors", (req, res) => {
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({ error: 'something went terribly wrong' });
+    res.status(500).json({ error: 'something\'s not right... });
   });
 });
 
+app.post('/authors', (req,res) => {
+  const requiredFields = ['firstName', 'lastName', 'userName'];
+  requiredFields.forEach(field => {
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  });
+  
 app.get("/posts", (req, res) => {
   BlogPost
     .find()
