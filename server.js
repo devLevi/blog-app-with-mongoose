@@ -145,12 +145,18 @@ app.get("/posts", (req, res) => {
 app.get('/posts/:id', (req, res) => {
   BlogPost
     .findById(req.params.id)
-    .then(post => res.json(post.serialize()))
+    .then(post => {
+      res.json({
+        id: post._id,
+        author: post.authorName,
+        content: post.content,
+        title: post.title,
+        comments: post.comments
+      });
+    })
     .catch(err => {
       console.error(err);
-      res.status(500).json({
-        error: 'something is not right'
-      });
+      res.status(500).json({ error: 'something went horribly awry' });
     });
 });
 
