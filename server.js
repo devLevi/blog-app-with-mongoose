@@ -111,6 +111,23 @@ app.put('/authors/:id', (req, res) => {
     });
 });
 
+app.delete('/authors/:id', (req, res) => {
+  BlogPost
+    .remove({ author: req.params.id })
+    .then(() => {
+      Author
+        .findByIdAndRemove(req.params.id)
+        .then(() => {
+          console.log(`Deleted blog posts owned by and author with id \`${req.params.id}\``);
+          res.status(204).json({ message: 'success' });
+        });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'something went terribly wrong' });
+    });
+});
+
 app.get("/posts", (req, res) => {
   BlogPost
     .find()
@@ -128,12 +145,18 @@ app.get("/posts", (req, res) => {
 app.get('/posts/:id', (req, res) => {
   BlogPost
     .findById(req.params.id)
-    .then(post => res.json(post.serialize()))
+    .then(post => {
+      res.json({
+        id: post._id,
+        author: post.authorName,
+        content: post.content,
+        title: post.title,
+        comments: post.comments
+      });
+    })
     .catch(err => {
       console.error(err);
-      res.status(500).json({
-        error: 'something is not right'
-      });
+      res.status(500).json({ error: 'something went horribly awry' });
     });
 });
 
